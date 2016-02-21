@@ -11,6 +11,6 @@
   <li>Extra: IBM BlueMix Speaker Classification</li>
 </ol>
 
-<h2>Acknowledgments:</h2>
+<h2>Acknowledgements:</h2>
 
 <a href="https://github.com/gtadiparthi/whatsapp-parser-lite">gtadiparthi's Whatsapp parser</a> was tweaked to fit current whatsapp chatlog format
