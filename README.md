@@ -1,5 +1,5 @@
 # WhatPy
-<h1>Machine Learning and Data Mining with Whatsapp Chat logs</h1>
+<h3>Machine Learning and Data Mining with Whatsapp Chat logs</h3>
 
 <h2>Overview:</h2>
 
