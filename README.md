@@ -1,7 +1,7 @@
 # WhatPy
-Machine Learning and Data Mining with Whatsapp Chat logs
+<h1>Machine Learning and Data Mining with Whatsapp Chat logs</h1>
 
-Overview:
+<h2>Overview:<.h2>
 
 1. Parse whatsapp chat logs
 
@@ -11,6 +11,11 @@ Overview:
 
 4. Analysis
 
-Bonus:
+<h2>Bonus:</h2>
 
 5. IBM BlueMix Speaker classification
+
+
+Acknowledgments:
+
+<a href="https://github.com/gtadiparthi/whatsapp-parser-lite">gtadiparthi's Whatsapp parser</a> was tweaked to fit current whatsapp chatlog format
