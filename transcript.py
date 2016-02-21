@@ -40,8 +40,12 @@ class Transcript():
 		seqNo = 0
 		for l in self.raw_messages:
 			l = l.rstrip()
-			partition = re.match('^([^,]+),\s*(\d+:\d+\s+\w+)\s+\-\s+([^:]+):\s(.+)$',l)
+			partition = re.match('^([^,]+),\s*(\d+:\d+\s+\w+)\s+\-\s+([^:]+):\s(.*)$',l)
+
 			if partition:
+				if re.search('changed\sthe\ssubject',partition.group(3)):
+					continue
+
 				msg_date, time, speaker, message = [partition.group(1),partition.group(2),partition.group(3), partition.group(4)]
 				lineNo += 1
 
@@ -58,10 +62,10 @@ class Transcript():
 				partition2 = re.match('^([^,]+),\s*(\d+:\d+\s+\w+)\s+\-',l)
 				if not partition2:
 					print l
-					self.datelist.append(prevRawDate)
-					self.timelist.append(prevTime)
-					self.speakerlist.append(prevSender)
-					self.messagelist[-1] = self.messagelist[-1] + ' ' + l
+					#self.datelist.append(prevRawDate)
+					#self.timelist.append(prevTime)
+					#self.speakerlist.append(prevSender)
+					self.messagelist[-1] = self.messagelist[-1] + ' <newline> ' + l
 
 	def write_transcript(self, end=0):
 		if end == 0:
