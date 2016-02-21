@@ -21,13 +21,25 @@
   </component>
   <component name="FileEditorManager">
     <leaf>
-      <file leaf-file-name="parse_whatsapp.py" pinned="false" current-in-tab="true">
+      <file leaf-file-name="parse_whatsapp.py" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/parse_whatsapp.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.3771331">
-              <caret line="13" column="18" selection-start-line="13" selection-start-column="18" selection-end-line="13" selection-end-column="18" />
+            <state vertical-scroll-proportion="0.0">
+              <caret line="24" column="40" selection-start-line="24" selection-start-column="40" selection-end-line="24" selection-end-column="40" />
               <folding>
                 <element signature="e#190#200#0" expanded="true" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="tagger.py" pinned="false" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/tagger.py">
+          <provider selected="true" editor-type-id="text-editor">
+            <state vertical-scroll-proportion="0.8122867">
+              <caret line="28" column="35" selection-start-line="28" selection-start-column="35" selection-end-line="28" selection-end-column="35" />
+              <folding>
+                <element signature="e#22#40#0" expanded="true" />
               </folding>
             </state>
           </provider>
@@ -36,8 +48,8 @@
       <file leaf-file-name="output_ham.csv" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/data/output_ham.csv">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="-5.4117646">
-              <caret line="44276" column="73" selection-start-line="44276" selection-start-column="58" selection-end-line="44276" selection-end-column="73" />
+            <state vertical-scroll-proportion="0.0882353">
+              <caret line="44268" column="38" selection-start-line="44268" selection-start-column="38" selection-end-line="44268" selection-end-column="38" />
               <folding />
             </state>
           </provider>
@@ -56,8 +68,8 @@
       <file leaf-file-name="transcript.py" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/transcript.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="-10.09375">
-              <caret line="67" column="83" selection-start-line="67" selection-start-column="83" selection-end-line="67" selection-end-column="83" />
+            <state vertical-scroll-proportion="-9.34375">
+              <caret line="71" column="39" selection-start-line="71" selection-start-column="39" selection-end-line="71" selection-end-column="39" />
               <folding>
                 <element signature="e#83#93#0" expanded="true" />
               </folding>
@@ -67,12 +79,21 @@
       </file>
     </leaf>
   </component>
+  <component name="FileTemplateManagerImpl">
+    <option name="RECENT_TEMPLATES">
+      <list>
+        <option value="Python Script" />
+      </list>
+    </option>
+  </component>
   <component name="IdeDocumentHistory">
     <option name="CHANGED_PATHS">
       <list>
         <option value="$PROJECT_DIR$/whatsapp_chat.txt" />
-        <option value="$PROJECT_DIR$/parse_whatsapp.py" />
         <option value="$PROJECT_DIR$/transcript.py" />
+        <option value="$PROJECT_DIR$/parse_whatsapp.py" />
+        <option value="$PROJECT_DIR$/data/tagger.py" />
+        <option value="$PROJECT_DIR$/tagger.py" />
       </list>
     </option>
   </component>
@@ -151,7 +172,12 @@
     <property name="recentsLimit" value="5" />
     <property name="FullScreen" value="false" />
   </component>
-  <component name="RunManager" selected="Python.parse_whatsapp">
+  <component name="RecentsManager">
+    <key name="MoveFile.RECENT_KEYS">
+      <recent name="C:\Users\Shaham\Documents\GitHub\WhatPy" />
+    </key>
+  </component>
+  <component name="RunManager" selected="Python.tagger">
     <configuration default="false" name="parse_whatsapp" type="PythonConfigurationType" factoryName="Python" temporary="true">
       <option name="INTERPRETER_OPTIONS" value="" />
       <option name="PARENT_ENVS" value="true" />
@@ -165,6 +191,23 @@
       <option name="ADD_SOURCE_ROOTS" value="true" />
       <module name="WhatPy" />
       <option name="SCRIPT_NAME" value="$PROJECT_DIR$/parse_whatsapp.py" />
+      <option name="PARAMETERS" value="" />
+      <option name="SHOW_COMMAND_LINE" value="false" />
+      <method />
+    </configuration>
+    <configuration default="false" name="tagger" type="PythonConfigurationType" factoryName="Python" temporary="true">
+      <option name="INTERPRETER_OPTIONS" value="" />
+      <option name="PARENT_ENVS" value="true" />
+      <envs>
+        <env name="PYTHONUNBUFFERED" value="1" />
+      </envs>
+      <option name="SDK_HOME" value="" />
+      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$" />
+      <option name="IS_MODULE_SDK" value="true" />
+      <option name="ADD_CONTENT_ROOTS" value="true" />
+      <option name="ADD_SOURCE_ROOTS" value="true" />
+      <module name="WhatPy" />
+      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/tagger.py" />
       <option name="PARAMETERS" value="" />
       <option name="SHOW_COMMAND_LINE" value="false" />
       <method />
@@ -291,12 +334,14 @@
       <option name="USE_KEYWORD" value="false" />
       <method />
     </configuration>
-    <list size="1">
+    <list size="2">
       <item index="0" class="java.lang.String" itemvalue="Python.parse_whatsapp" />
+      <item index="1" class="java.lang.String" itemvalue="Python.tagger" />
     </list>
     <recent_temporary>
-      <list size="1">
-        <item index="0" class="java.lang.String" itemvalue="Python.parse_whatsapp" />
+      <list size="2">
+        <item index="0" class="java.lang.String" itemvalue="Python.tagger" />
+        <item index="1" class="java.lang.String" itemvalue="Python.parse_whatsapp" />
       </list>
     </recent_temporary>
   </component>
@@ -373,16 +418,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/transcript.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="-10.09375">
-          <caret line="67" column="83" selection-start-line="67" selection-start-column="83" selection-end-line="67" selection-end-column="83" />
-          <folding>
-            <element signature="e#83#93#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/data/whatsapp_chat_ham.txt">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="-11.411765">
@@ -393,18 +428,38 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/data/output_ham.csv">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="-5.4117646">
-          <caret line="44276" column="73" selection-start-line="44276" selection-start-column="58" selection-end-line="44276" selection-end-column="73" />
+        <state vertical-scroll-proportion="0.0882353">
+          <caret line="44268" column="38" selection-start-line="44268" selection-start-column="38" selection-end-line="44268" selection-end-column="38" />
           <folding />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/parse_whatsapp.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.3771331">
-          <caret line="13" column="18" selection-start-line="13" selection-start-column="18" selection-end-line="13" selection-end-column="18" />
+        <state vertical-scroll-proportion="0.0">
+          <caret line="24" column="40" selection-start-line="24" selection-start-column="40" selection-end-line="24" selection-end-column="40" />
           <folding>
             <element signature="e#190#200#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/transcript.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="-9.34375">
+          <caret line="71" column="39" selection-start-line="71" selection-start-column="39" selection-end-line="71" selection-end-column="39" />
+          <folding>
+            <element signature="e#83#93#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/tagger.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.8122867">
+          <caret line="28" column="35" selection-start-line="28" selection-start-column="35" selection-end-line="28" selection-end-column="35" />
+          <folding>
+            <element signature="e#22#40#0" expanded="true" />
           </folding>
         </state>
       </provider>
