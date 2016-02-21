@@ -20,6 +20,6 @@ def parse_whatsapp(chat,output):
     print (('Unique Speakers: ', sorted(list(data.Speaker.unique()))))
 
 if __name__ == "__main__":
-    whatsapp_chat = 'whatsapp_chat.txt'
-    output = 'output.csv'
+    whatsapp_chat = 'data/whatsapp_chat.txt'
+    output = 'data/output.csv'
     parse_whatsapp(whatsapp_chat,output)
