@@ -2,7 +2,9 @@
 <h3>Machine Learning and Data Mining with Whatsapp Chat logs</h3>
 
 <h2>Overview:</h2>
+<p>This is a project to learn various NLP and data mining techniques while doing something fun and interesting. We will explore different language feature extraction methods, and a variety of ML classification or clustering methods. Through this project, we hope to become familiar with the basics of NLP techniques as well as gain exposure to a variety of NLP and ML toolkits for python.</p>
 
+<h4>Breakdown of Project:</h4>
 <ol>
   <li>Parse whatsapp chat logs</li>
   <li>Tagger + feature extraction</li>
