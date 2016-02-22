@@ -47,6 +47,9 @@ class Transcript():
 					continue
 
 				msg_date, time, speaker, message = [partition.group(1),partition.group(2),partition.group(3), partition.group(4)]
+				if message == '<Media omitted>' or message == 'N/A':
+					continue
+				speaker = re.sub(' ','',speaker)
 				lineNo += 1
 
 				self.datelist.append(msg_date)
@@ -65,7 +68,7 @@ class Transcript():
 					#self.datelist.append(prevRawDate)
 					#self.timelist.append(prevTime)
 					#self.speakerlist.append(prevSender)
-					self.messagelist[-1] = self.messagelist[-1] + ' <newline> ' + l
+					self.messagelist[-1] = self.messagelist[-1] + ' ' + l
 
 	def write_transcript(self, end=0):
 		if end == 0:
