@@ -6,6 +6,8 @@ from sklearn.cross_validation import train_test_split
 from sklearn import neighbors
 from sklearn import svm
 import random
+from NLPlib import *
+nlp_tag = NLPlib()
 
 patternL = []
 with open('Wordlists/laughs.txt', 'rb') as f:
@@ -13,26 +15,30 @@ with open('Wordlists/laughs.txt', 'rb') as f:
         if len(word)>1:
             w = word[:-2]
             patternL.append(w)
+            patternL.append('$')
             patternL.append('|')
 pattern = "".join(patternL[:-1])
-print pattern
+#print pattern
 laughs = re.compile(pattern,re.IGNORECASE)
 
 patternL = []
 with open('Wordlists/Slang2', 'rb') as f:
     for word in f:
-        if len(word)>1:
-            w = word[:-1]
+        if len(word)>2:
+            w = word[:-2]
             patternL.append('^')
             patternL.append(w)
-            patternL.append('$|')
+            patternL.append('$')
+            patternL.append('|')
+
 pattern = "".join(patternL[:-1])
-print pattern
+#print pattern
 slang = re.compile(pattern,re.IGNORECASE)
 
 rlg= re.compile('alhamdu|subhan|astag|^ia$', re.IGNORECASE) #Religious phrases
 corr= re.compile('(.+)\*$', re.IGNORECASE) #Corrections
 emojis = re.compile(u'^\\xf0') #emojis
+def count_tags(msg):
 
 def tag_msgs(msg):
     #If the msg is <media omitted> we count that as an entity in itself
@@ -42,7 +48,11 @@ def tag_msgs(msg):
         #TODO: Deal with Names, Slang (including lol, lmao, rofl, etc.), Emoticons, ASCII characters, and maybe specific words we are interested in (iA,salam, etc.)
         #TODO: instead of just word tokenization, consider sentance tokenizer? maybe specific phrases, idk
         text = nltk.word_tokenize(msg) #separate msg by words
-        tokenized_text = nltk.pos_tag(text) #Tokenize each word using NLTK tokenizer
+        tagged = nlp_tag.tag(text)
+        #tokenized_text = nltk.pos_tag(text) #Tokenize each word using NLTK tokenizer
+        tokenized_text = [('','')]*len(text)
+        for i in range(len(text)):
+            tokenized_text[i] = (text[i], tagged[i])
 
         #After tokenization changes
         #Laughs
@@ -58,8 +68,7 @@ def tag_msgs(msg):
                 tokenized_text[i] = (tokenized_text[i][0],'CORR')
             elif emojis.match(tokenized_text[i][0]):
                 tokenized_text[i] = (tokenized_text[i][0],'EMJ')
-            elif tokenized_text[i][0] == r'\\xF0\\x9F\\x98\\x82':
-                tokenized_text[i] = (tokenized_text[i][0],'EMJ')
+
         #print pattern
 
 
@@ -136,7 +145,7 @@ if __name__ == '__main__':
     X =np.zeros((TRAIN_SIZE),dtype=list)
     random.seed(42)
     inds = random.sample(xrange(len(msg_corpus)), TRAIN_SIZE)
-    print inds
+    #print inds
     for ind in range(TRAIN_SIZE):
         X[ind] = tag_msgs(msg_corpus[inds[ind]])
         print X[ind]
