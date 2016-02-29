@@ -39,10 +39,6 @@ rlg= re.compile('alhamdu|subhan|astag|^ia$', re.IGNORECASE) #Religious phrases
 corr= re.compile('(.+)\*$', re.IGNORECASE) #Corrections
 emojis = re.compile(u'^\\xf0') #emojis
 
-def count_tags(msg):
-
-
-    return
 
 
 def tag_msgs(msg):
@@ -76,32 +72,80 @@ def tag_msgs(msg):
 
     return tokenized_text
 
-
-if __name__ == '__main__':
+def get_data(TRAIN_SIZE, num_features, speakers):
+    random.seed(42)
 
     chat_log = 'data/output_ham.csv'
 
     data = pd.read_csv(chat_log)
+    X =np.zeros((TRAIN_SIZE*len(speakers),num_features))
+    Y =np.zeros((TRAIN_SIZE*len(speakers)))
+    for i in range(len(speakers)):
+        data_sub = data[data.Speaker.isin(speakers[i])]
+        if data_sub.shape[0]<TRAIN_SIZE:
+            print "Sorry, you only have " + str(data_sub.shape[0]) + "data points for " + str(speakers[i])
+        data_sub = list(data_sub.Text)
+        np.random.shuffle(data_sub)
+        data_sub = data_sub[:TRAIN_SIZE]
+        for m in range(TRAIN_SIZE):
+            tagged_array = tag_msgs(data_sub[m])
+            X[(TRAIN_SIZE*i)+m,:] = count_tags(tagged_array)
+            Y[(TRAIN_SIZE*i)+m] = i
+
+
+    # spk1 = ['Shaham']
+    # spk2 = ['HammadMirza']
+    # data1 = data[data.Speaker.isin(spk1)]
+    # data2 = data[data.Speaker.isin(spk2)]
+    #
+    # minm = min([data1.shape[0],data2.shape[0]])
+    # print 'Minimum per speaker: ' + str(minm)
+    #
+    # data1 = list(data1.Text)
+    # data2 = list(data2.Text)
+    #
+    #
+    #
+    # #inds0 = random.sample(xrange(data1.shape[0]), TRAIN_SIZE)
+    # #inds1 = random.sample(xrange(data2.shape[0]), TRAIN_SIZE)
+    #
+    #
+    # #format data into msg and label
+    # msg_corpus = np.concatenate((np.random.shuffle(list(data1.Text))[:TRAIN_SIZE],np.random.shuffle(list(data2.Text))[:TRAIN_SIZE]))
+    # speakers = np.concatenate(([0]*TRAIN_SIZE,[1]*TRAIN_SIZE))
+    #
+    #
+    # #print inds
+    # for i in range(X.shape[0]):
+    #     tagged_array = tag_msgs(msg_corpus[i])
+    #     X[i,:] = count_tags(tagged_array)
+    #     Y[i] = speakers[i]
+
+    return X, Y
+
+def fit_features(clf, X,Y):
+    clf.fit(X, Y)
+    return
+
+def classify_features(clf, Xt,Yt):
+    Z = clf.predict(Xt)
+    val = 0.0
+    for i in range(len(Z)):
+        print Z[i]
+    print val/len(Z)
+
+    return
+
+if __name__ == '__main__':
+
     spk1 = ['Shaham']
     spk2 = ['HammadMirza']
-    data1 = data[data.Speaker.isin(spk1)]
-    data2 = data[data.Speaker.isin(spk2)]
 
-    minm = min([data1.shape[0],data2.shape[0]])
-    print 'Minimum per speaker: ' + str(minm)
+    X, Y = get_data(20,6,[spk1,spk2])
+    print X
+    print Y
+    clf = neighbors.KNeighborsClassifier(4, weights='distance')
 
-    #format data into msg and label
-    msg_corpus = np.concatenate((list(data1.Text)[:minm],list(data2.Text)[:minm]))
-    speakers = np.concatenate((['speaker1']*minm,['speaker2']*minm))
-
-    TRAIN_SIZE = 15
-    X =np.zeros((TRAIN_SIZE),dtype=list)
-    random.seed(42)
-    inds = random.sample(xrange(len(msg_corpus)), TRAIN_SIZE)
-    #print inds
-    for ind in range(TRAIN_SIZE):
-        X[ind] = tag_msgs(msg_corpus[inds[ind]])
-        print X[ind]
     # with open(chat_log, 'rb') as csvfile:
     #     reader = csv.reader(csvfile)
     #     #i is temporary just for testing pusposes so we only look at a certain amount of messages
