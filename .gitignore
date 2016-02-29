@@ -1,3 +1,4 @@
 data/
 .idea/
 *.xml
+.idea/workspace.xml
