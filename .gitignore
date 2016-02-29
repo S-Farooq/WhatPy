@@ -1,4 +1,7 @@
 data/
 .idea/
 *.xml
+*.pyc
 .idea/workspace.xml
+transcript.pyc
+NLPlib.pyc

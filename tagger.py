@@ -45,8 +45,6 @@ emojis = re.compile(u'^\\xf0') #emojis
 # Returns an array containing the total count for each feature.
 def count_tags(msg, tagsDict):
 
-    counts = []
-
     maxValue = max(tagsDict.values())
 
     counts = np.zeros((maxValue + 1))
@@ -105,7 +103,8 @@ def get_data(TRAIN_SIZE, num_features, speakers):
         data_sub = data_sub[:TRAIN_SIZE]
         for m in range(TRAIN_SIZE):
             tagged_array = tag_msgs(data_sub[m])
-            X[(TRAIN_SIZE*i)+m,:] = count_tags(tagged_array)
+            tags = {'NN': 0, 'IN': 1, 'UH': 2, 'CC': 3, 'RB': 4, 'PRP': 5, 'VB': 6, 'EMJ': 7}
+            X[(TRAIN_SIZE*i)+m,:] = count_tags(tagged_array, tags)
             Y[(TRAIN_SIZE*i)+m] = i
 
 
@@ -157,24 +156,24 @@ if __name__ == '__main__':
     spk1 = ['Shaham']
     spk2 = ['HammadMirza']
 
-    X, Y = get_data(20,6,[spk1,spk2])
+    X, Y = get_data(20,8,[spk1,spk2])
     print X
     print Y
     clf = neighbors.KNeighborsClassifier(4, weights='distance')
 
-    TRAIN_SIZE = 15
-    X =np.zeros((TRAIN_SIZE),dtype=list)
-    random.seed(42)
-    inds = random.sample(xrange(len(msg_corpus)), TRAIN_SIZE)
-    #print inds
-    for ind in range(TRAIN_SIZE):
-        X[ind] = tag_msgs(msg_corpus[inds[ind]])
-        print X[ind]
-
-        ## count how many times certain tags appear in a message.
-        tags = {'NN': 0, 'IN': 1, 'UH': 2, 'CC': 3, 'RB': 4, 'PRP': 5, 'VB': 6, 'EMJ': 7}
-        tagCount = count_tags( X[ind], tags)
-        print tagCount
+    # TRAIN_SIZE = 15
+    # X =np.zeros((TRAIN_SIZE),dtype=list)
+    # random.seed(42)
+    # inds = random.sample(xrange(len(msg_corpus)), TRAIN_SIZE)
+    # #print inds
+    # for ind in range(TRAIN_SIZE):
+    #     X[ind] = tag_msgs(msg_corpus[inds[ind]])
+    #     print X[ind]
+    #
+    #     ## count how many times certain tags appear in a message.
+    #     tags = {'NN': 0, 'IN': 1, 'UH': 2, 'CC': 3, 'RB': 4, 'PRP': 5, 'VB': 6, 'EMJ': 7}
+    #     tagCount = count_tags( X[ind], tags)
+    #     print tagCount
 
     # with open(chat_log, 'rb') as csvfile:
     #     reader = csv.reader(csvfile)
