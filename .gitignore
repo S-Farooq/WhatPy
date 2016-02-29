@@ -1,2 +1,3 @@
 data/
-data/whatsapp_chat_ham.txt
+.idea/
+*.xml

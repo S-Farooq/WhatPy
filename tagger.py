@@ -38,7 +38,12 @@ slang = re.compile(pattern,re.IGNORECASE)
 rlg= re.compile('alhamdu|subhan|astag|^ia$', re.IGNORECASE) #Religious phrases
 corr= re.compile('(.+)\*$', re.IGNORECASE) #Corrections
 emojis = re.compile(u'^\\xf0') #emojis
+
 def count_tags(msg):
+
+
+    return
+
 
 def tag_msgs(msg):
     #If the msg is <media omitted> we count that as an entity in itself
