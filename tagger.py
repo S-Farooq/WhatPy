@@ -62,7 +62,7 @@ def tag_msgs(msg):
     else:
         #TODO: Deal with Names, Slang (including lol, lmao, rofl, etc.), Emoticons, ASCII characters, and maybe specific words we are interested in (iA,salam, etc.)
         #TODO: instead of just word tokenization, consider sentance tokenizer? maybe specific phrases, idk
-        text = nltk.word_tokenize(msg) #separate msg by words
+        text = nltk.word_tokenize(msg.decode('utf-8')) #separate msg by words
         tagged = nlp_tag.tag(text)
         #tokenized_text = nltk.pos_tag(text) #Tokenize each word using NLTK tokenizer
         tokenized_text = [('','')]*len(text)
@@ -103,7 +103,7 @@ def get_data(TRAIN_SIZE, num_features, speakers):
         data_sub = data_sub[:TRAIN_SIZE]
         for m in range(TRAIN_SIZE):
             tagged_array = tag_msgs(data_sub[m])
-            tags = {'NN': 0, 'IN': 1, 'UH': 2, 'CC': 3, 'RB': 4, 'PRP': 5, 'VB': 6, 'EMJ': 7}
+            tags = {'NN': 0, 'IN': 1, 'UH': 2, 'LOL': 3, 'RLG': 4, 'SLG': 5, 'VB': 6, 'EMJ': 7}
             X[(TRAIN_SIZE*i)+m,:] = count_tags(tagged_array, tags)
             Y[(TRAIN_SIZE*i)+m] = i
 
@@ -146,7 +146,9 @@ def classify_features(clf, Xt,Yt):
     Z = clf.predict(Xt)
     val = 0.0
     for i in range(len(Z)):
-        print Z[i]
+        if Z[i] == Yt[i]:
+            val +=1
+
     print val/len(Z)
 
     return
@@ -156,10 +158,14 @@ if __name__ == '__main__':
     spk1 = ['Shaham']
     spk2 = ['HammadMirza']
 
-    X, Y = get_data(20,8,[spk1,spk2])
-    print X
-    print Y
+    X, y = get_data(2000,8,[spk1,spk2])
+
+    #print X
+    #print y
+    X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.33, random_state=42)
     clf = neighbors.KNeighborsClassifier(4, weights='distance')
+    fit_features(clf,X_train, y_train)
+    classify_features(clf, X_test, y_test)
 
     # TRAIN_SIZE = 15
     # X =np.zeros((TRAIN_SIZE),dtype=list)
