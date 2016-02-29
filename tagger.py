@@ -74,59 +74,8 @@ def tag_msgs(msg):
             elif emojis.match(tokenized_text[i][0]):
                 tokenized_text[i] = (tokenized_text[i][0],'EMJ')
 
-        #print pattern
-
-
-
-
     return tokenized_text
 
-def corpus_vectorizer(corpus, n_grams):
-    #Creates a dictionary where each unique unigram (single word) and bigram (2 consecutive words) is represented by an index in a vector
-    #Converts all the training data into a set of vectors
-    #Converts test data into vectors depending on vectorizer dictionary developed from training data
-    #Return the vectorizer
-
-    vectorizer = CountVectorizer(min_df=1, decode_error='replace', ngram_range=n_grams)
-    train, test = train_test_split(corpus, test_size=0.10, random_state=42)
-    train = vectorizer.fit_transform(train)
-    test = vectorizer.transform(test)
-    return vectorizer, train, test
-
-def Classify(clf,X,y, Xt, yt, v,vt):
-    clf.fit(X, y.toarray())
-    Z = clf.predict(Xt)
-    val = 0.0
-    for i in range(len(Z)):
-        p = np.argmax(Z[i])
-        o = np.argmax(yt.toarray()[i])
-        print vt.vocabulary_.keys()[vt.vocabulary_.values().index(p)]
-        print vt.vocabulary_.keys()[vt.vocabulary_.values().index(o)]
-        if p == o:
-            val += 1
-        print
-
-    print val/len(Z)
-
-def vector_classify(msg_corpus, speakers):
-    # #Read CSV File row by row and send each msg to tagger
-    # with open(chat_log, 'rb') as f:
-    #     reader = csv.reader(f)
-    #     train_data = list(reader)
-    #
-    # print len(train_data)
-
-
-    #Vectorize
-    v, X_train, X_test = corpus_vectorizer(msg_corpus[:], (1,2))
-    vt, y_train, y_test = corpus_vectorizer(speakers[:], (1,1))
-    print "Vectorized, shape of train data:"
-    print X_train.shape
-    print y_train.shape
-
-    clf = neighbors.KNeighborsClassifier(14, weights='distance')
-    #clfsvm = svm.SVC()
-    Classify(clf,X_train,y_train,X_test,y_test,v,vt)
 
 if __name__ == '__main__':
 
@@ -145,7 +94,6 @@ if __name__ == '__main__':
     msg_corpus = np.concatenate((list(data1.Text)[:minm],list(data2.Text)[:minm]))
     speakers = np.concatenate((['speaker1']*minm,['speaker2']*minm))
 
-    #vector_classify(msg_corpus,speakers)
     TRAIN_SIZE = 15
     X =np.zeros((TRAIN_SIZE),dtype=list)
     random.seed(42)
