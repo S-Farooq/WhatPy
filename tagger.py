@@ -138,6 +138,58 @@ def get_data(TRAIN_SIZE, num_features, speakers):
 
     return X, Y
 
+def get_time(TRAIN_SIZE, speakers):
+    random.seed(42)
+
+    chat_log = 'data/output_ham.csv'
+
+    data = pd.read_csv(chat_log)
+    X =np.zeros((TRAIN_SIZE*len(speakers),24)) ## 24 hours in a day
+    Y =np.zeros((TRAIN_SIZE*len(speakers)))
+
+    for i in range(len(speakers)):
+        data_sub = data[data.Speaker.isin(speakers[i])]
+        if data_sub.shape[0]<TRAIN_SIZE:
+            print "Sorry, you only have " + str(data_sub.shape[0]) + "data points for " + str(speakers[i])
+        data_sub = list(data_sub.Time)
+        np.random.shuffle(data_sub)
+        data_sub = data_sub[:TRAIN_SIZE]
+
+        # numTwentyFourTime will store the int form of the hour of the message in 24 hour format
+        numTwentyFourTime = np.zeros(TRAIN_SIZE)
+
+        # count_times[n] will store the number of times a message is sent in the nth hour of the 24 hour clock
+        # e.g, count_times[15] corresponds to 3pm.
+        count_times = np.zeros(24)
+        for j in range(TRAIN_SIZE):
+            twentyFourTime = ''
+            flagSkip = 0
+
+            # TODO(hammad): move the following into its own function and find a less hacky way to do this...
+            for digit in data_sub[j]:
+                if digit != ':' and digit != 'A' and digit != 'P' and flagSkip == 0:
+                    twentyFourTime += digit
+                elif digit == ':':
+                    flagSkip = 1
+                elif digit == 'P':
+                    numTwentyFourTime[j] = int(twentyFourTime)
+                    if numTwentyFourTime[j] != 12:
+                        numTwentyFourTime[j] += 12
+                elif digit == 'A':
+                    numTwentyFourTime[j] = int(twentyFourTime)
+                    if numTwentyFourTime[j] == 12:
+                        numTwentyFourTime[j] = 0
+
+            # Incrememnt the count for the hour in which the current message was sent.
+            count_times[numTwentyFourTime[j]] += 1
+
+        # Training data for each message.
+        for k in range(TRAIN_SIZE):
+            X[(TRAIN_SIZE*i)+k,:] = count_times[numTwentyFourTime[k]]
+            Y[(TRAIN_SIZE*i)+k] = i
+        print count_times
+    return X, Y
+
 def fit_features(clf, X,Y):
     clf.fit(X, Y)
     return
@@ -159,9 +211,6 @@ if __name__ == '__main__':
     spk2 = ['HammadMirza']
 
     X, y = get_data(2000,8,[spk1,spk2])
-
-    #print X
-    #print y
     X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.33, random_state=42)
     clf = neighbors.KNeighborsClassifier(4, weights='distance')
     fit_features(clf,X_train, y_train)
@@ -196,3 +245,11 @@ if __name__ == '__main__':
 
     #print len(train_corpus)
     #print len(train_lab els)
+
+    ## TIME FEATURE
+    print "Classifying time"
+    X, y = get_time(2000,[spk1,spk2])
+    X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.33, random_state=42)
+    clf = neighbors.KNeighborsClassifier(4, weights='distance')
+    fit_features(clf,X_train, y_train)
+    classify_features(clf, X_test, y_test)
