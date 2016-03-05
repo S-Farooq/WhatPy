@@ -8,6 +8,7 @@ from sklearn import svm
 import random
 from NLPlib import *
 nlp_tag = NLPlib()
+import matplotlib.pyplot as plt
 
 patternL = []
 with open('Wordlists/laughs.txt', 'rb') as f:
@@ -52,7 +53,7 @@ def count_tags(msg, tagsDict):
     for word in msg:
         if word[1] in tagsDict:
             counts[tagsDict[word[1]]] += 1
-
+    #print counts
     return counts
 
 def tag_msgs(msg):
@@ -86,10 +87,8 @@ def tag_msgs(msg):
 
     return tokenized_text
 
-def get_data(TRAIN_SIZE, num_features, speakers):
+def get_data(TRAIN_SIZE, num_features, speakers, chat_log):
     random.seed(42)
-
-    chat_log = 'data/output_ham.csv'
 
     data = pd.read_csv(chat_log)
     X =np.zeros((TRAIN_SIZE*len(speakers),num_features))
@@ -138,13 +137,11 @@ def get_data(TRAIN_SIZE, num_features, speakers):
 
     return X, Y
 
-def get_time(TRAIN_SIZE, speakers):
+def get_time(TRAIN_SIZE, speakers, chat_log):
     random.seed(42)
 
-    chat_log = 'data/output_ham.csv'
-
     data = pd.read_csv(chat_log)
-    X =np.zeros((TRAIN_SIZE*len(speakers),24)) ## 24 hours in a day
+    X =np.zeros((TRAIN_SIZE*len(speakers),1)) ## speaker vs the time of msg.
     Y =np.zeros((TRAIN_SIZE*len(speakers)))
 
     for i in range(len(speakers)):
@@ -152,42 +149,52 @@ def get_time(TRAIN_SIZE, speakers):
         if data_sub.shape[0]<TRAIN_SIZE:
             print "Sorry, you only have " + str(data_sub.shape[0]) + "data points for " + str(speakers[i])
         data_sub = list(data_sub.Time)
+        # TODO(hammad): uncomment shuffling later.
         np.random.shuffle(data_sub)
         data_sub = data_sub[:TRAIN_SIZE]
 
-        # numTwentyFourTime will store the int form of the hour of the message in 24 hour format
+        # numTwentyFourTime will store the 24 hour time of the message in decimal form.
+        # e.g, 2:30 pm will be stored as 14.50
         numTwentyFourTime = np.zeros(TRAIN_SIZE)
 
         # count_times[n] will store the number of times a message is sent in the nth hour of the 24 hour clock
         # e.g, count_times[15] corresponds to 3pm.
+        # Only for debugging purposes. count_times won't be used anywhere.
         count_times = np.zeros(24)
         for j in range(TRAIN_SIZE):
             twentyFourTime = ''
+            minutes = ''
             flagSkip = 0
+            flagMinutes = 0
 
             # TODO(hammad): move the following into its own function and find a less hacky way to do this...
             for digit in data_sub[j]:
-                if digit != ':' and digit != 'A' and digit != 'P' and flagSkip == 0:
+                if digit != ':' and digit != 'A' and digit != 'P' and flagSkip == 0 and flagMinutes == 0:
                     twentyFourTime += digit
                 elif digit == ':':
                     flagSkip = 1
+                    flagMinutes = 1
+                elif flagMinutes == 1 and digit != 'P' and digit != 'A' and digit != 'M':
+                    minutes += digit
                 elif digit == 'P':
-                    numTwentyFourTime[j] = int(twentyFourTime)
+                    numTwentyFourTime[j] = float(twentyFourTime)
                     if numTwentyFourTime[j] != 12:
                         numTwentyFourTime[j] += 12
+                    numTwentyFourTime[j] += (float(minutes)/60.0)
                 elif digit == 'A':
-                    numTwentyFourTime[j] = int(twentyFourTime)
+                    numTwentyFourTime[j] = float(twentyFourTime)
                     if numTwentyFourTime[j] == 12:
                         numTwentyFourTime[j] = 0
+                    numTwentyFourTime[j] += (float(minutes)/60.0)
 
             # Incrememnt the count for the hour in which the current message was sent.
             count_times[numTwentyFourTime[j]] += 1
 
-        # Training data for each message.
-        for k in range(TRAIN_SIZE):
-            X[(TRAIN_SIZE*i)+k,:] = count_times[numTwentyFourTime[k]]
-            Y[(TRAIN_SIZE*i)+k] = i
-        print count_times
+            # Training data
+            X[(TRAIN_SIZE*i)+j,:] = numTwentyFourTime[j]
+            Y[(TRAIN_SIZE*i)+j] = i
+            #print numTwentyFourTime[j]
+        #print count_times
     return X, Y
 
 def fit_features(clf, X,Y):
@@ -205,12 +212,24 @@ def classify_features(clf, Xt,Yt):
 
     return
 
+def min_occurrences( speakers, chat_log ):
+    data = pd.read_csv(chat_log)
+    dataX = np.zeros(len(speakers))
+    for i in range(len(speakers)):
+        dataX[i] = len(data[data.Speaker.isin(speakers[i])])
+
+    return int(min(dataX))
+
 if __name__ == '__main__':
 
-    spk1 = ['Shaham']
+    chat_log = 'data/output_ham.csv'
+    spk1 = ['Qasim']
     spk2 = ['HammadMirza']
+    min_train_size = min_occurrences( [spk1, spk2], chat_log )
+    print "Min train size " + str(min_train_size)
 
-    X, y = get_data(2000,8,[spk1,spk2])
+    print "Classifying tag counts"
+    X, y = get_data(min_train_size,8,[spk1, spk2], chat_log)
     X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.33, random_state=42)
     clf = neighbors.KNeighborsClassifier(4, weights='distance')
     fit_features(clf,X_train, y_train)
@@ -248,8 +267,17 @@ if __name__ == '__main__':
 
     ## TIME FEATURE
     print "Classifying time"
-    X, y = get_time(2000,[spk1,spk2])
+    X, y = get_time(min_train_size,[spk1,spk2], chat_log)
     X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.33, random_state=42)
     clf = neighbors.KNeighborsClassifier(4, weights='distance')
     fit_features(clf,X_train, y_train)
     classify_features(clf, X_test, y_test)
+
+    plt.scatter(y, X)
+    plt.ylabel('hours')
+    plt.xlabel('0 = '+spk1[0]+', 1 = '+spk2[0])
+    plt.xlim(-0.5,1.5)
+    plt.ylim(-1,25)
+    plt.show()
+
+    print "done"
