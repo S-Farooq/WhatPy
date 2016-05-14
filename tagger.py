@@ -12,6 +12,7 @@ from NLPlib import *
 nlp_tag = NLPlib()
 import matplotlib.pyplot as plt
 import word2vec
+import gensim
 
 
 patternL = []
@@ -377,7 +378,8 @@ def get_word_vectors(TRAIN_SIZE, speakers, chat_log, model):
             X[(TRAIN_SIZE*i)+m,:] = 1
             Y[(TRAIN_SIZE*i)+m] = i
 
-        print (success / float(success + fail))*100.0 + "% of words for this speaker can be vectorized."
+        print "% of words from this speaker that exist in the wikipedia corpus: "
+        print (success / float(success + fail))*100.0
 
 
     return X, Y
@@ -619,10 +621,10 @@ if __name__ == '__main__':
 
     ## Word2Vec
     model = word2vec.load('WordVecTest/text8.bin')
-    print model['dog'].shape
     get_word_vectors(50,[spk1, spk2], chat_log, model)
 
-
+    # Gensim word2vec
+    g_model = gensim.models.Word2Vec.load_word2vec_format( 'WordVecTest/text8.bin', binary = True )
 
 
     # plt.scatter(y, X)
