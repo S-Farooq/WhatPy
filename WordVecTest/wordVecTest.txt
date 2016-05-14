@@ -1,0 +1,2 @@
+This is a test file.
+This file is to train word2vec embedding.

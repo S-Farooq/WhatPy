@@ -3,6 +3,7 @@
   <component name="ProjectModuleManager">
     <modules>
       <module fileurl="file://$PROJECT_DIR$/.idea/WhatPy.iml" filepath="$PROJECT_DIR$/.idea/WhatPy.iml" />
+      <module fileurl="file://$PROJECT_DIR$/../ud120-projects/.idea/ud120-projects.iml" filepath="$PROJECT_DIR$/../ud120-projects/.idea/ud120-projects.iml" />
     </modules>
   </component>
 </project>
